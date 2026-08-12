@@ -20,6 +20,13 @@ nativa do Netlify com o GitHub: uma deploy key de leitura no repositório e um
 webhook de push para `api.netlify.com`. Não há GitHub Actions nem token —
 o `deploy.yml` foi removido justamente para não disputar o mesmo site.
 
+> **Por que a conta Netlify precisa do GitHub conectado.** O repositório é
+> privado, e o plano Free só constrói repo privado se o autor do commit for
+> membro verificado da conta. A verificação é feita pela identidade GitHub
+> vinculada à conta Netlify — não pelo e-mail do commit, que já foi testado e
+> não resolve. Sem esse vínculo, o build morre em *"Build blocked:
+> Unrecognized Git contributor"*.
+
 Para publicar da máquina, sem passar pelo GitHub:
 
 ```bash
