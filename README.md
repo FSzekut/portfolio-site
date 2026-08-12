@@ -2,20 +2,23 @@
 
 Fonte da página única publicada em <https://fernando-szekut.netlify.app>.
 
-O site é um HTML autocontido — sem build, sem dependências, sem JavaScript.
-Estilos inline no próprio arquivo, tema claro/escuro pelo `prefers-color-scheme`.
+O site é um HTML autocontido — sem build e sem dependências. Estilos inline no
+próprio arquivo. O único JavaScript é o scroll reveal, que degrada para
+conteúdo visível sem JS ou com `prefers-reduced-motion`.
 
 ## Estrutura
 
 ```
 public/index.html   o site inteiro
 netlify.toml        diz ao Netlify para publicar public/
-.github/workflows/  deploy automático a cada push na main
 ```
 
 ## Publicar
 
-Qualquer push na `main` publica em produção. Nada mais é necessário.
+Qualquer push na `main` publica em produção. Quem faz isso é a integração
+nativa do Netlify com o GitHub: uma deploy key de leitura no repositório e um
+webhook de push para `api.netlify.com`. Não há GitHub Actions nem token —
+o `deploy.yml` foi removido justamente para não disputar o mesmo site.
 
 Para publicar da máquina, sem passar pelo GitHub:
 
