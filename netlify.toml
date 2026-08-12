@@ -1,0 +1,4 @@
+[build]
+  # Não há build: o site é um HTML autocontido.
+  # O Netlify publica o conteúdo de public/ como está.
+  publish = "public"

@@ -1,0 +1,31 @@
+name: Deploy no Netlify
+
+# Publica a cada push na main. O workflow_dispatch permite disparar
+# manualmente pela aba Actions, sem precisar de commit.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Evita dois deploys simultâneos: se um novo push chegar enquanto o
+# anterior ainda publica, o antigo é cancelado e vale sempre o último.
+concurrency:
+  group: deploy-producao
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Publicar em produção
+        run: npx --yes netlify-cli@27 deploy --prod --dir=public --message "$GITHUB_SHA"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          # O site id não é segredo: aparece na URL do painel do Netlify.
+          NETLIFY_SITE_ID: 964c7d24-406d-4e3c-9fc0-ec937e68c2eb
