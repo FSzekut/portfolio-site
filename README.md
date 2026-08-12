@@ -15,17 +15,19 @@ netlify.toml        diz ao Netlify para publicar public/
 
 ## Publicar
 
-Qualquer push na `main` publica em produção. Quem faz isso é a integração
-nativa do Netlify com o GitHub: uma deploy key de leitura no repositório e um
-webhook de push para `api.netlify.com`. Não há GitHub Actions nem token —
-o `deploy.yml` foi removido justamente para não disputar o mesmo site.
+Qualquer push na `main` publica em produção, pela integração nativa do Netlify
+com o GitHub. Não há GitHub Actions nem token: o `deploy.yml` foi removido para
+não disputar o mesmo site.
 
-> **Por que a conta Netlify precisa do GitHub conectado.** O repositório é
-> privado, e o plano Free só constrói repo privado se o autor do commit for
-> membro verificado da conta. A verificação é feita pela identidade GitHub
-> vinculada à conta Netlify — não pelo e-mail do commit, que já foi testado e
-> não resolve. Sem esse vínculo, o build morre em *"Build blocked:
-> Unrecognized Git contributor"*.
+> **Por que este repositório é público.** O plano Core Starter do Netlify não
+> constrói repositório **privado** — o build é recusado com *"Build blocked:
+> Unrecognized Git contributor"*, e não há ajuste de commit que resolva. As
+> saídas documentadas são pagar o plano, publicar à mão pelo CLI ou tornar o
+> repositório público. Como o conteúdo aqui é exatamente o HTML que qualquer
+> visitante já baixa do site, público sai de graça.
+>
+> Repositório com informação que não deva circular volta a ser privado — e
+> nesse caso a publicação passa a ser manual, pelo CLI.
 
 Para publicar da máquina, sem passar pelo GitHub:
 
