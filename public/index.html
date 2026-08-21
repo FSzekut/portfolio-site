@@ -265,9 +265,7 @@
     height: auto;
     width: 100%;
   }
-  /* O gráfico sai do relatório em fundo claro. Fica como figura de papel no card. */
-  .shot.papel { background: #fffdfb; }
-  /* A legenda tem fundo próprio: sobre o gráfico claro, texto cinza não teria contraste. */
+  /* A legenda tem fundo próprio, separada da imagem. */
   .shot figcaption {
     background: var(--raised);
     border-top: 1px solid var(--line);
@@ -436,6 +434,10 @@
       A entrega é contínua e passa por um portão de avaliação antes do deploy: se a qualidade
       da recuperação cai, o build não sobe.
     </p>
+    <p class="text">
+      É a segunda implementação de RAG daqui. A primeira foi o Second Brain, duas semanas antes,
+      com a similaridade calculada na mão.
+    </p>
 
     <div class="metrics">
       <div class="metric"><b>23/23</b><span>no portão de avaliação</span></div>
@@ -459,11 +461,11 @@
       <span class="tag">relatório publicado</span>
     </div>
     <p class="tagline">Previsão de temperatura do aço, com o mapa dos próprios erros.</p>
-    <figure class="shot papel">
-      <img src="img/steelproof.webp" width="880" height="410"
+    <figure class="shot">
+      <img src="img/steelproof-escuro.webp" width="880" height="388"
         loading="lazy" decoding="async"
-        alt="Gráfico de barras comparando as corridas com erro acima de 10 °C com as demais: energia total 38,6% maior, duração do arco 27,5%, potência ativa 24,3% e temperatura inicial 0,6%.">
-      <figcaption>Nas corridas que o modelo erra por mais de 10 °C, a energia total aparece 38,6% acima das demais. A temperatura de entrada, 0,6%.</figcaption>
+        alt="Gráfico de barras comparando as corridas com erro acima de 10 °C com as demais: energia total 38,7% maior, duração do arco 27,5%, potência ativa 24,3% e temperatura inicial 0,6%.">
+      <figcaption>Nas corridas que o modelo erra por mais de 10 °C, a energia total aparece 38,7% acima das demais. A temperatura de entrada, 0,6%.</figcaption>
     </figure>
 
     <p class="text">
@@ -502,7 +504,7 @@
       <h2>n8n-imoveis</h2>
       <span class="tag">roda local</span>
     </div>
-    <p class="tagline">Varredura diária de portais de imóveis que só avisa o que ainda não apareceu.</p>
+    <p class="tagline">O mesmo anúncio não chega duas vezes.</p>
 
     <figure class="shot">
       <img src="img/n8n.webp" width="880" height="270"
@@ -512,9 +514,14 @@
     </figure>
 
     <p class="text">
-      Um fluxo no n8n dispara todo dia, consulta dois portais e manda no Telegram apenas o que é
-      novo ou baixou de preço. A deduplicação compara com o histórico de execuções anteriores,
-      então um anúncio visto ontem não volta hoje.
+      Procurar apartamento é abrir os mesmos portais todo dia e ir salvando link para ver depois.
+      Em menos de um dia o mesmo imóvel já está salvo duas vezes, com título diferente, às vezes
+      em dois portais. O trabalho de conferir o que já foi visto é maior que o de procurar.
+    </p>
+    <p class="text">
+      O fluxo busca no ZAP e no VivaReal todo dia às 11h, compara com tudo que apareceu nas
+      execuções anteriores e manda no Telegram só o que ainda não tinha aparecido ou baixou de
+      preço. Dia sem novidade não gera mensagem.
     </p>
     <p class="text">
       A coleta é um serviço em FastAPI que fica de pé escutando numa porta. Os portais bloqueiam
@@ -522,12 +529,6 @@
       pausa de oito. A saída foi abrir um navegador novo a cada página, e isso só ficou visível
       quando o n8n mandou seis buscas de uma vez.
     </p>
-
-    <div class="metrics">
-      <div class="metric"><b>1.569 &rarr; 31</b><span>o que o filtro na URL corta</span></div>
-      <div class="metric"><b>28/30</b><span>anúncios que os dois portais repetem</span></div>
-      <div class="metric"><b>8</b><span>nós no fluxo</span></div>
-    </div>
 
     <ul class="chips">
       <li>n8n</li><li>Python</li><li>FastAPI</li>
@@ -541,7 +542,7 @@
   <article class="card rise">
     <div class="card-head">
       <h2>Second Brain 24/7</h2>
-      <span class="tag">código aberto</span>
+      <span class="tag on">no ar</span>
     </div>
     <p class="tagline">RAG multi-provider sobre uma base de conhecimento pessoal.</p>
     <figure class="shot">
@@ -553,9 +554,13 @@
 
     <p class="text">
       Assistente que responde sobre um acervo próprio de notas, com troca de provedor de modelo
-      e recuperação construída do zero. É a segunda implementação de RAG do portfólio, e as duas
-      foram feitas de forma independente uma da outra: uma sobre framework, outra com o cálculo
-      de similaridade escrito na mão.
+      e recuperação construída do zero. Foi a primeira implementação de RAG daqui, de julho, com
+      o cálculo de similaridade escrito na mão. O RAGnaldo veio duas semanas depois, sobre
+      framework, e entre os dois dá para ver o que a escolha muda.
+    </p>
+    <p class="text">
+      A instância roda no Cloud Run com acesso restrito, então o que está aberto para visita é o
+      código.
     </p>
 
     <ul class="chips">
