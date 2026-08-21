@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fernando Szekut — IA aplicada</title>
-<meta name="description" content="Projetos de IA aplicada: agente de RAG em produção, previsão de temperatura no forno-panela e RAG sobre base de conhecimento pessoal.">
+<meta name="description" content="Projetos de IA aplicada: agente de RAG em produção, previsão de temperatura no forno-panela, RAG sobre base de conhecimento pessoal e um pipeline de coleta em n8n.">
 <link rel="canonical" href="https://fernando-szekut.netlify.app/">
 <meta name="theme-color" content="#050506">
 
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Fernando Szekut — IA aplicada">
-<meta property="og:description" content="Agente de RAG em produção, previsão de temperatura no forno-panela e RAG sobre base de conhecimento pessoal.">
+<meta property="og:description" content="Agente de RAG em produção, previsão de temperatura no forno-panela, RAG sobre base de conhecimento pessoal e um pipeline de coleta em n8n.">
 <meta property="og:url" content="https://fernando-szekut.netlify.app/">
 <meta property="og:locale" content="pt_BR">
 
@@ -253,6 +253,30 @@
     font-weight: 500;
     margin: 0 0 1.25rem;
   }
+  /* Uma imagem por card, tirada do próprio projeto. Ilustração genérica, nunca. */
+  .shot {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin: 0 0 1.5rem;
+    overflow: hidden;
+  }
+  .shot img {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+  /* O gráfico sai do relatório em fundo claro. Fica como figura de papel no card. */
+  .shot.papel { background: #fffdfb; }
+  /* A legenda tem fundo próprio: sobre o gráfico claro, texto cinza não teria contraste. */
+  .shot figcaption {
+    background: var(--raised);
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .78rem;
+    line-height: 1.5;
+    padding: .7rem .9rem;
+  }
+
   .card p.text {
     color: var(--muted);
     margin: 0 0 1rem;
@@ -388,7 +412,7 @@
 </header>
 
 <main id="projetos">
-  <p class="section-label rise">Três projetos públicos</p>
+  <p class="section-label rise">Quatro projetos públicos</p>
 
   <article class="card rise">
     <div class="card-head">
@@ -396,6 +420,12 @@
       <span class="tag on">no ar</span>
     </div>
     <p class="tagline">Agente de RAG que prefere recusar a inventar.</p>
+    <figure class="shot">
+      <img src="img/ragnaldo.webp" width="880" height="552"
+        alt="Conversa com o RAGnaldo: a resposta e, abaixo, a lista de fontes consultadas que não sustentam afirmações.">
+      <figcaption>O agente separa o que sustenta a resposta do que apenas consultou, e diz qual é qual.</figcaption>
+    </figure>
+
     <p class="text">
       Responde sobre um acervo técnico e, quando a pergunta está fora dele, diz que está fora
       em vez de produzir uma alucinação educada. O fluxo de decisão é um grafo com quatro nós:
@@ -429,6 +459,13 @@
       <span class="tag">relatório publicado</span>
     </div>
     <p class="tagline">Previsão de temperatura do aço, com o mapa dos próprios erros.</p>
+    <figure class="shot papel">
+      <img src="img/steelproof.webp" width="880" height="410"
+        loading="lazy" decoding="async"
+        alt="Gráfico de barras comparando as corridas com erro acima de 10 °C com as demais: energia total 38,6% maior, duração do arco 27,5%, potência ativa 24,3% e temperatura inicial 0,6%.">
+      <figcaption>Nas corridas que o modelo erra por mais de 10 °C, a energia total aparece 38,6% acima das demais. A temperatura de entrada, 0,6%.</figcaption>
+    </figure>
+
     <p class="text">
       Regressão para prever a temperatura final do aço no refino secundário em forno-panela e
       reduzir consumo de energia.
@@ -462,10 +499,58 @@
 
   <article class="card rise">
     <div class="card-head">
+      <h2>n8n-imoveis</h2>
+      <span class="tag">roda local</span>
+    </div>
+    <p class="tagline">Varredura diária de portais de imóveis que só avisa o que ainda não apareceu.</p>
+
+    <figure class="shot">
+      <img src="img/n8n.webp" width="880" height="270"
+        loading="lazy" decoding="async"
+        alt="O fluxo no n8n: agendador, montagem das buscas, requisição HTTP, split, chave, deduplicação, formatação e envio no Telegram.">
+      <figcaption>Os números sobre as conexões vêm de uma execução real: seis buscas entram e 73 anúncios saem do Split Out. Depois da deduplicação sobraram dois avisos para o Telegram.</figcaption>
+    </figure>
+
+    <p class="text">
+      Um fluxo no n8n dispara todo dia, consulta dois portais e manda no Telegram apenas o que é
+      novo ou baixou de preço. A deduplicação compara com o histórico de execuções anteriores,
+      então um anúncio visto ontem não volta hoje.
+    </p>
+    <p class="text">
+      A coleta é um serviço em FastAPI que fica de pé escutando numa porta. Os portais bloqueiam
+      a sessão, não o ritmo: depois da primeira busca tudo volta 403 em meio segundo, mesmo com
+      pausa de oito. A saída foi abrir um navegador novo a cada página, e isso só ficou visível
+      quando o n8n mandou seis buscas de uma vez.
+    </p>
+
+    <div class="metrics">
+      <div class="metric"><b>1.569 &rarr; 31</b><span>o que o filtro na URL corta</span></div>
+      <div class="metric"><b>28/30</b><span>anúncios que os dois portais repetem</span></div>
+      <div class="metric"><b>8</b><span>nós no fluxo</span></div>
+    </div>
+
+    <ul class="chips">
+      <li>n8n</li><li>Python</li><li>FastAPI</li>
+      <li>crawl4ai</li><li>JSON-LD</li><li>Telegram</li>
+    </ul>
+    <p class="links">
+      <a class="plain" href="https://github.com/FSzekut/n8n-imoveis">Código <span aria-hidden="true">&rarr;</span></a>
+    </p>
+  </article>
+
+  <article class="card rise">
+    <div class="card-head">
       <h2>Second Brain 24/7</h2>
       <span class="tag">código aberto</span>
     </div>
     <p class="tagline">RAG multi-provider sobre uma base de conhecimento pessoal.</p>
+    <figure class="shot">
+      <img src="img/second-brain.webp" width="880" height="412"
+        loading="lazy" decoding="async"
+        alt="O assistente responde qual a linguagem do Steelproof e acrescenta uma ressalva sobre a origem da conclusão.">
+      <figcaption>Perguntado qual a linguagem do Steelproof, o assistente responde Python e logo avisa que a conclusão vem dos formatos de arquivo, não de algo escrito nas notas.</figcaption>
+    </figure>
+
     <p class="text">
       Assistente que responde sobre um acervo próprio de notas, com troca de provedor de modelo
       e recuperação construída do zero. É a segunda implementação de RAG do portfólio, e as duas
@@ -484,7 +569,7 @@
 
 <footer>
   <p>
-    Os três projetos são públicos e verificáveis: código, decisões e o que não deu certo estão
+    Os quatro projetos são públicos e verificáveis: código, decisões e o que não deu certo estão
     nos repositórios. Os números acima saem do portão de avaliação e do relatório, não de
     estimativa.
   </p>
